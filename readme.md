@@ -1,6 +1,7 @@
-Here is a `README.md` file for your project:
+Here is a README.md file for your project:
 
-```markdown
+markdown
+Code kopieren
 # DigiTrack - Hand Movement Detection System
 
 DigiTrack is a hand movement detection application built using Python, OpenCV, MediaPipe, and Tkinter. The application tracks hand movements via a webcam and displays real-time statistics on the detected hands, estimated number of people, active time, and idle time.
@@ -36,7 +37,6 @@ To get started with DigiTrack, follow these steps:
 
 ```bash
 pip install opencv-python mediapipe tk
-```
 
 3. Clone or download this repository to your local machine.
 
