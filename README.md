@@ -111,7 +111,7 @@ For any questions or issues, feel free to open an issue or contact the repositor
 
 ## Contributors 
 
-This project was proudly developed by Group 1: Duru Çetinel, Mallikarjun Patil, Hazal Elif Sari, Vasif Vahidov, and Yue Yu.
+This project was proudly developed by Group 1: Duru Çetinel, Mallikarjun Patil, Hazal Elif Sari, Vasif Vahidov, and Yue Yu. @OTH Amberg-Weiden.
 
 ```
 
