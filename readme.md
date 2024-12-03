@@ -1,4 +1,3 @@
-Here is a README.md file for your project:
 
 markdown
 Code kopieren
@@ -48,62 +47,50 @@ python digitrack.py
 The Tkinter interface will appear, and the application will start detecting hands via the webcam.
 Click the Start Detection button to begin tracking.
 The real-time statistics will update as the application detects hands.
-## GUI Overview
-
-- **Status**: Displays whether the system is waiting for detection, detecting hands, or idle.
-- **Hands Detected**: Shows the number of hands detected in the camera feed.
-- **People Detected**: Displays an estimate of the number of people based on the number of hands detected (rounded up).
-- **Time Active**: Shows how long the hands have been actively detected.
-- **Last Inactivity**: Displays the start and end times of the last inactivity period (if no hands are detected for 10 seconds).
-- **Total Time Spent**: Shows the total time the system has been active since the start.
-- **Barcode**: Input field for entering a barcode number.
-- **Loading Label**: Displays when the camera is being initialized.
-
-## Code Explanation
-
-### Libraries
-
-1. **OpenCV (`cv2`)**: Used for video capture and frame processing.
-2. **MediaPipe (`mediapipe`)**: Provides pre-built models for detecting hands in video frames.
-3. **Tkinter (`tk`)**: The GUI library used to display information and allow user interaction.
-4. **Time (`time`)**: Used for tracking timestamps such as start time, active time, and inactivity duration.
-5. **Threading**: Used to run the hand detection function in a separate thread, allowing for real-time UI updates.
-
-### Key Functions
-
-- **`get_camera()`**: Attempts to open a webcam and return the video capture object.
-- **`detect_hands()`**: Main function for hand detection. It processes each video frame to detect hands, update statistics, and handle inactivity.
-- **`start_detection()`**: Starts the hand detection process in a separate thread.
-  
-### Global Variables
-
-- **`start_time`**: Stores the timestamp when the hand detection starts.
-- **`exit_time`**: Stores the timestamp when the program is closed.
-- **`active_time`**: Tracks how long the system has been actively detecting hands.
-- **`hands_detected`**: Number of hands detected in the current frame.
-- **`total_hands_detected`**: Cumulative number of hands detected since the start.
-- **`running`**: A flag to control the ongoing detection loop.
-- **`inactive_start_time`**: The time when the system first detects inactivity (no hands detected).
-- **`last_inactivity_start` / `last_inactivity_end`**: Track the time period when inactivity occurs.
-
-### Tkinter Elements
-
-- **`root`**: The main Tkinter window.
-- **`status`, `hand_count`, `time_active`, `people_count`, `last_inactive`, `start_time_display`, `total_time_spent`**: String variables to dynamically update the UI with the latest information.
-- **`barcode_value`**: A string variable for the barcode entry field.
-
-## Notes
-
-- The application supports up to 5 hands being detected simultaneously.
-- If no hands are detected for 10 seconds, the system considers it idle and updates the UI accordingly.
-- Press **'q'** to quit the application.
-
-## License
-
+GUI Overview
+Status: Displays whether the system is waiting for detection, detecting hands, or idle.
+Hands Detected: Shows the number of hands detected in the camera feed.
+People Detected: Displays an estimate of the number of people based on the number of hands detected (rounded up).
+Time Active: Shows how long the hands have been actively detected.
+Last Inactivity: Displays the start and end times of the last inactivity period (if no hands are detected for 10 seconds).
+Total Time Spent: Shows the total time the system has been active since the start.
+Barcode: Input field for entering a barcode number.
+Loading Label: Displays when the camera is being initialized.
+Code Explanation
+Libraries
+OpenCV (cv2): Used for video capture and frame processing.
+MediaPipe (mediapipe): Provides pre-built models for detecting hands in video frames.
+Tkinter (tk): The GUI library used to display information and allow user interaction.
+Time (time): Used for tracking timestamps such as start time, active time, and inactivity duration.
+Threading: Used to run the hand detection function in a separate thread, allowing for real-time UI updates.
+Key Functions
+get_camera(): Attempts to open a webcam and return the video capture object.
+detect_hands(): Main function for hand detection. It processes each video frame to detect hands, update statistics, and handle inactivity.
+start_detection(): Starts the hand detection process in a separate thread.
+Global Variables
+start_time: Stores the timestamp when the hand detection starts.
+exit_time: Stores the timestamp when the program is closed.
+active_time: Tracks how long the system has been actively detecting hands.
+hands_detected: Number of hands detected in the current frame.
+total_hands_detected: Cumulative number of hands detected since the start.
+running: A flag to control the ongoing detection loop.
+inactive_start_time: The time when the system first detects inactivity (no hands detected).
+last_inactivity_start / last_inactivity_end: Track the time period when inactivity occurs.
+Tkinter Elements
+root: The main Tkinter window.
+status, hand_count, time_active, people_count, last_inactive, start_time_display, total_time_spent: String variables to dynamically update the UI with the latest information.
+barcode_value: A string variable for the barcode entry field.
+Notes
+The application supports up to 5 hands being detected simultaneously.
+If no hands are detected for 10 seconds, the system considers it idle and updates the UI accordingly.
+Press 'q' to quit the application.
+License
 This project is open-source and available under the MIT License. Feel free to use, modify, and contribute!
 
-## Contact
-
+Contact
 For any questions or issues, feel free to open an issue or contact the repository owner.
 
-```
+bash
+Code kopieren
+
+This `README.md` provides an overview of the project, installation instructions, explanation of ke
