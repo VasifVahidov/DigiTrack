@@ -37,23 +37,17 @@ To get started with DigiTrack, follow these steps:
 
 ```bash
 pip install opencv-python mediapipe tk
-
-3. Clone or download this repository to your local machine.
-
-## How to Run
-
-1. Ensure that a webcam is connected to your computer.
-2. Navigate to the directory where you saved the project.
-3. Run the script:
-
-```bash
+Clone or download this repository to your local machine.
+How to Run
+Ensure that a webcam is connected to your computer.
+Navigate to the directory where you saved the project.
+Run the script:
+bash
+Code kopieren
 python digitrack.py
-```
-
-4. The Tkinter interface will appear, and the application will start detecting hands via the webcam.
-5. Click the **Start Detection** button to begin tracking.
-6. The real-time statistics will update as the application detects hands.
-
+The Tkinter interface will appear, and the application will start detecting hands via the webcam.
+Click the Start Detection button to begin tracking.
+The real-time statistics will update as the application detects hands.
 ## GUI Overview
 
 - **Status**: Displays whether the system is waiting for detection, detecting hands, or idle.
