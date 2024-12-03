@@ -109,6 +109,10 @@ This project is open-source and available under the MIT License. Feel free to us
 
 For any questions or issues, feel free to open an issue or contact the repository owner.
 
+## Contributors 
+
+This project was proudly developed by Group 1: Duru Çetinel, Mallikarjun Patil, Hazal Elif Sari, Vasif Vahidov, and Yue Yu.
+
 ```
 
 This `README.md` provides an overview of the project, installation instructions, explanation of key functions and variables, and additional details about how the software works.
