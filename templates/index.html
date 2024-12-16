@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiTrack - Industrial Time Recorder</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #003366;
+            margin: 20px 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: stretch;
+            width: 95%;
+            max-width: 1400px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #003366;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        #controls, #total-time {
+            width: 20%;
+            background: #f9f9f9;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-right: 1px solid #ddd;
+        }
+
+        #controls {
+            border-left: 1px solid #ddd;
+        }
+
+        #video-container {
+            width: 60%;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #video-container img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        label {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            font-size: 1rem;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #003366;
+            color: #ffffff;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: #002244;
+        }
+
+        #total-time {
+            border-left: 1px solid #ddd;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        #total-time span {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #003366;
+            margin-top: 10px;
+        }
+
+        #session-status {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>DigiTrack - Industrial Time Recorder</h1>
+    <div class="container">
+        <!-- Left: Controls -->
+        <div id="controls">
+            <label for="production-order">Production Order</label>
+            <input type="text" id="production-order" placeholder="Enter Order ID">
+            <button id="start-button" disabled>Start Tracking</button>
+            <button id="stop-button" disabled>Stop & Save</button>
+            <div id="session-status">Session Status: Stopped</div>
+        </div>
+
+        <!-- Center: Video -->
+        <div id="video-container">
+            <div id="spinner" class="spinner"></div>
+            <img id="video-feed" alt="Start Tracking - Video Stream">
+        </div>
+
+        <!-- Right: Total Time -->
+        <div id="total-time">
+            <div>Total Time</div>
+            <span id="total-time-display">00:00:00</span>
+        </div>
+    </div>
+    <footer>&copy; 2024 DigiTrack - Industrial Time Recorder. All Rights Reserved.</footer>
+    <script>
+        let detectionRunning = false;
+        let idleTimeout = null;
+
+        // Helper function to format time in HH:MM:SS
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return [
+                hours.toString().padStart(2, '0'),
+                minutes.toString().padStart(2, '0'),
+                remainingSeconds.toString().padStart(2, '0')
+            ].join(':');
+        }
+
+        function toggleStartButton() {
+            const productionOrder = document.getElementById('production-order').value.trim();
+            document.getElementById('start-button').disabled = productionOrder === "";
+        }
+
+        async function startDetection() {
+            const productionOrder = document.getElementById('production-order').value.trim();
+            if (!productionOrder) {
+                alert('Please enter a production order number.');
+                return;
+            }
+
+            const spinner = document.getElementById('spinner');
+            const videoFeed = document.getElementById('video-feed');
+            spinner.style.display = 'block';
+            videoFeed.style.display = 'none';
+
+            const response = await fetch('/start_detection', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ production_order: productionOrder })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message);
+                spinner.style.display = 'none';
+                videoFeed.style.display = 'block';
+                document.getElementById('start-button').disabled = true;
+                document.getElementById('stop-button').disabled = false;
+                videoFeed.src = `/video_feed?t=${new Date().getTime()}`;
+                detectionRunning = true;
+                document.getElementById('total-time-display').textContent = "00:00:00";
+                document.getElementById('session-status').textContent = "Session Status: Running";
+                resetIdleTimeout();
+            } else {
+                const data = await response.json();
+                alert(data.error || "Error starting the session.");
+                spinner.style.display = 'none';
+            }
+        }
+
+        async function stopDetection() {
+            const response = await fetch('/stop_detection', { method: 'POST' });
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(`Detection stopped. Data saved to CSV.`);
+            } else {
+                alert('Error stopping detection. Please try again.');
+            }
+            location.reload();
+            resetUI();
+        }
+
+        function resetUI() {
+            document.getElementById('start-button').disabled = false;
+            document.getElementById('stop-button').disabled = true;
+            document.getElementById('video-container').style.display = 'none';
+            document.getElementById('production-order').value = "";
+            document.getElementById('video-feed').src = "";
+            document.getElementById('session-status').textContent = "Session Status: Stopped";
+            document.getElementById('total-time-display').textContent = "00:00:00";
+            detectionRunning = false;
+        }
+
+        async function updateSessionStatus() {
+            const response = await fetch('/total_time');
+            const data = await response.json();
+            const statusElement = document.getElementById('session-status');
+            
+            if (data.status === 'running') {
+                statusElement.textContent = "Session Status: Running";
+            } else if (data.status === 'idle') {
+                statusElement.textContent = "Session Status: Idle";
+            } else if (data.status === 'stopped') {
+                statusElement.textContent = "Session Status: Stopped";
+            }
+
+            document.getElementById('total-time-display').textContent = formatTime(data.total_time);
+        }
+        setInterval(updateSessionStatus, 1000);
+
+
+        function resetIdleTimeout() {
+            if (idleTimeout) {
+                clearTimeout(idleTimeout);
+            }
+            idleTimeout = setTimeout(() => {
+                if (detectionRunning) {
+                    stopDetection();
+                }
+            }, 60000); // 1 minute idle time
+        }
+
+        document.getElementById('production-order').addEventListener('input', toggleStartButton);
+        document.getElementById('start-button').addEventListener('click', startDetection);
+        document.getElementById('stop-button').addEventListener('click', stopDetection);
+
+        // Initialize session status
+        updateSessionStatus();
+        setInterval(updateSessionStatus, 1000); // Update every second
+    </script>
+</body>
+</html>
